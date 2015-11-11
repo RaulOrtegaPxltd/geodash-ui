@@ -51,6 +51,7 @@ bdl.geodash.HeatmapView = Backbone.View.extend({
 			this.map.gd.log({type:"info",message: "Selecting "+this.model.getTitle(row)+"..."});
 		}else if(this.model.get('source') == "gdgrid") {
       var gdGridId = this.model.get('gdGridId');
+      // TODO: MSTR BONES TO MOJO
       var allBones = $.map(window.top.microstrategy.bones, function(b) {
         if(b.isGridBone) return b;
       });
@@ -244,7 +245,7 @@ bdl.geodash.HeatmapView = Backbone.View.extend({
 			type: "info" });
 
     if(!this.model.isPopulated() || isRefresh){
-			if(this.tab){ this.tab.setLoading(); }//this.tab.setLoading();
+			if(this.tab){ this.tab.setLoading(); }// this.tab.setLoading();
 			var self = this;
 			var opts = {
 				model: self.model,
@@ -369,7 +370,7 @@ bdl.geodash.HeatmapView = Backbone.View.extend({
       }
 
     }catch(e){
-      // weird error from google on setmap null				
+      // weird error from google on setmap null
     }			
 	},
 	

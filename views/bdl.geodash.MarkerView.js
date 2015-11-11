@@ -1,13 +1,16 @@
 // State events: error, loading, ready
 bdl.geodash.MarkerView = Backbone.View.extend({
-	initialize: function(){
+	initialize : function() {
 		this.map = this.options.map;
 		this._setMapWindow = true;
 		this._initModel();
 		this.model.view = this;
-		_.bindAll(this,'render','toggleLayer');
+		_.bindAll(this, 'render', 'toggleLayer');
 		this.parentEl = $(this.map.el).parents("table.gd-frame").find("#gd-accordion")[0];
-		this.tab = new bdl.geodash.NavTab({model: this.model,p: this.parentEl});
+		this.tab = new bdl.geodash.NavTab({
+			model : this.model,
+			p : this.parentEl
+		});
 		this.markers = [];
 		this.circles = [];
 		this.tab.render();
@@ -15,406 +18,448 @@ bdl.geodash.MarkerView = Backbone.View.extend({
 		this.model.bind("change:on", this.toggleLayer);
 	},
 
-	addMarker: function(icon,row){
+	addMarker : function(icon, row) {
 		var marker;
-		if(this.map.base.is('google')){
-			marker =  new google.maps.Marker(icon);
+		if (this.map.base.is('google')) {
+			marker = new google.maps.Marker(icon);
 			marker.row = row;
 			var self = this;
-			google.maps.event.addListener(marker, "click", function (e) {
+			google.maps.event.addListener(marker, "click", function(e) {
 				self.showInfoBox(this.row);
 			});
-			if(this.model.get('cluster') === false){
+			if (this.model.get('cluster') === false) {
 				marker.setMap(this.map.apiMap);
 			}
-		} else if(this.map.base.is('leaflet-mapquest')) {
-      marker = new L.Marker(icon.position, {icon: icon});
+		} else if (this.map.base.is('leaflet-mapquest')) {
+			marker = new L.Marker(icon.position, {
+				icon : icon
+			});
 			marker.row = row;
 			var self = this;
-      marker.on('click', function(e) {
+			marker.on('click', function(e) {
 				self.showInfoBox(this.row);
-      });
+			});
 
-      marker.row = row;
-      this.map.apiMap.addLayer(marker);
+			marker.row = row;
+			this.map.apiMap.addLayer(marker);
 
-    }
+		}
 		this.markers.push(marker);
-    this.bounds.extend(this.map.getApiMarkerLatLng(marker));
+		this.bounds.extend(this.map.getApiMarkerLatLng(marker));
 	},
 
-	makeSelection: function(row){
-		if(!this.map.gd.base.get('isDoc')){
+	makeSelection : function(row) {
+		if (!this.map.gd.base.get('isDoc')) {
 			return false;
 		}
-		if(this.model.get('source') == "current"){
-			bdl.geodash.MSTR.makeSelections([this.model.getTitle(row)],this.map.gd);
-			this.map.gd.log({type:"info",message: "Selecting "+this.model.getTitle(row)+"..."});
-    } else if(this.model.get('source') == "gdgrid") {
-      var gdGridId = this.model.get('gdGridId');
-      var allBones = $.map(window.top.microstrategy.bones, function(b) {
-        if(b.isGridBone) return b;
-      });
-      var bone = $.map(allBones, function(b) {if(b.id == gdGridId) {return b;}})[0];
-      var selector = $(bone.gridSpan).find("div.selector")[0].innerText;
+		if (this.model.get('source') == "current") {
+			bdl.geodash.MSTR.makeSelections([ this.model.getTitle(row) ], this.map.gd);
+			this.map.gd.log({
+				type : "info",
+				message : "Selecting " + this.model.getTitle(row) + "..."
+			});
+		} else if (this.model.get('source') == "gdgrid") {
+			var gdGridId = this.model.get('gdGridId');
+		    // TODO: MSTR BONES TO MOJO
+			var allBones = $.map(window.top.microstrategy.bones, function(b) {
+				if (b.isGridBone)
+					return b;
+			});
+			var bone = $.map(allBones, function(b) {
+				if (b.id == gdGridId) {
+					return b;
+				}
+			})[0];
+			var selector = $(bone.gridSpan).find("div.selector")[0].innerText;
 
-			bdl.geodash.MSTR.makeSelections([this.model.getTitle(row)], this.map.gd, gdGridId, selector);
+			bdl.geodash.MSTR.makeSelections([ this.model.getTitle(row) ], this.map.gd, gdGridId, selector);
 
 		} else {
-			this.map.gd.log({type:"info",message: "Cannot select external layers..."});
+			this.map.gd.log({
+				type : "info",
+				message : "Cannot select external layers..."
+			});
 		}
 	},
 
-	showInfoBox: function(row){
-    if(this.model.get('infoWindow') == "document") {
-      var r = this.model.getRow(row);
-      var w =  this.model.get('infoWindowWidth');
-      var h =  this.model.get('infoWindowHeight');
-      var t = "custom title"; // this.model.getTitle(row);
-      var l = this.model.get('infoWindowDocumentURL');
-      l = l + this.model.getPromptAnsSuff(row);
+	showInfoBox : function(row) {
+		if (this.model.get('infoWindow') == "document") {
+			var r = this.model.getRow(row);
+			var w = this.model.get('infoWindowWidth');
+			var h = this.model.get('infoWindowHeight');
+			var t = "custom title"; // this.model.getTitle(row);
+			var l = this.model.get('infoWindowDocumentURL');
+			l = l + this.model.getPromptAnsSuff(row);
 
-      var content = {title: t, row: r,className:"", width: w, height: h, loc: l};
-      this.ib.setIBOptions({
-        boxStyle: {
-          width: w + 25 + "px",
-          height: h + "px"
-        }
-      })
-      this.ib.setContent(bdl.geodash.TF.iBoxDocument(content));
+			var content = {
+				title : t,
+				row : r,
+				className : "",
+				width : w,
+				height : h,
+				loc : l
+			};
+			this.ib.setIBOptions({
+				boxStyle : {
+					width : w + 25 + "px",
+					height : h + "px"
+				}
+			})
+			this.ib.setContent(bdl.geodash.TF.iBoxDocument(content));
 
-    } else if(this.model.get('infoWindow') == "default") {
-      var r = this.model.getRow(row);
-      var w = this._getBoxWidth(r);
-      var t = this.model.getTitle(row);
+		} else if (this.model.get('infoWindow') == "default") {
+			var r = this.model.getRow(row);
+			var w = this._getBoxWidth(r);
+			var t = this.model.getTitle(row);
 
-      if(t.length * 11 >= w) {
-        var lastChr = w / 11;
+			if (t.length * 11 >= w) {
+				var lastChr = w / 11;
 
-        // truncate 4 characters
-        lastChr = lastChr - 4;
+				// truncate 4 characters
+				lastChr = lastChr - 4;
 
-        // default to one character if padding brings it down to less than one
-        if(lastChr < 1) {lastChr = 1}
+				// default to one character if padding brings it down to less than one
+				if (lastChr < 1) {
+					lastChr = 1
+				}
 
-        t = '<span title="' + t + '">' + t.substring(0,lastChr) + '...</span>';
-      }
+				t = '<span title="' + t + '">' + t.substring(0, lastChr) + '...</span>';
+			}
 
-      var content = {title: t, row: r,className:""};
-      this.ib.setIBOptions({
-        boxStyle: {
-          width: w + "px"
-        }
-      });
-		  this.ib.setContent(bdl.geodash.TF.iBox(content));
-    } else {
-      // don't show the infowindow
-    }
+			var content = {
+				title : t,
+				row : r,
+				className : ""
+			};
+			this.ib.setIBOptions({
+				boxStyle : {
+					width : w + "px"
+				}
+			});
+			this.ib.setContent(bdl.geodash.TF.iBox(content));
+		} else {
+			// don't show the infowindow
+		}
 
-    if(this.model.get('infoWindow') != "none") {
-      this.ib.open(this.map.apiMap,this.markers[row]);
-    }
+		if (this.model.get('infoWindow') != "none") {
+			this.ib.open(this.map.apiMap, this.markers[row]);
+		}
 		this.makeSelection(row);
 	},
 
-	setMapWindow: function(){
-    if(this.map.panZoomToRetain()) {
-      return;
-    }
+	setMapWindow : function() {
+		if (this.map.panZoomToRetain()) {
+			return;
+		}
 
-		if(!this._setMapWindow){ return; }
+		if (!this._setMapWindow) {
+			return;
+		}
 		this._setMapWindow = false;
 		this.map.apiMap.panTo(this.bounds.getCenter());
 		var self = this;
-		window.setTimeout(function(){
+		window.setTimeout(function() {
 			self.map.apiMap.fitBounds(self.bounds);
-		},1000);
+		}, 1000);
 	},
 
-	render: function(){
-		try{
+	render : function() {
+		try {
 			this.bounds = this.map.getBounds();
 			this.tab.setLoading();
 			this.clearMarkers();
 			this._initInfoBox();
-			if(this.model.isOn() && this.model.get('state') == "ready"){
+			if (this.model.isOn() && this.model.get('state') == "ready") {
 				this.renderMarkers();
 				this.setMapWindow();
 			}
 			// Hack is here until we properly create a state machine
 			// The render is called by map api loaded event and it
-			// is also called once data is fetched.  The state
+			// is also called once data is fetched. The state
 			// has to be correctly set incase either happens out of order.
-			if(this.model.get('state') == "failed") {
-				this.tab.setError({message: ""});
-			}else if(this.model.get('state') == "processing"){
+			if (this.model.get('state') == "failed") {
+				this.tab.setError({
+					message : ""
+				});
+			} else if (this.model.get('state') == "processing") {
 				this.tab.setLoading();
-			}else if(this.model.get('state') == "ready"){
+			} else if (this.model.get('state') == "ready") {
 				this.tab.setReady();
 			}
-		}catch(e){
-      // console.log(e, e.message);
+		} catch (e) {
+			// console.log(e, e.message);
 			this.tab.setError(e);
 		}
 	},
 
-	refresh: function(options){
-    opts = $.extend({
-      steMapWindow: false,
-      forceLoad: false
-      }, options);
+	refresh : function(options) {
+		opts = $.extend({
+			steMapWindow : false,
+			forceLoad : false
+		}, options);
 
 		this._setMapWindow = opts['setMapWindow'];
 
-		if(opts['forceLoad'] || !this.model.isPopulated()){
+		if (opts['forceLoad'] || !this.model.isPopulated()) {
 			this.clearMarkers();
 			this.loadModel(true);
-		}else{
+		} else {
 			this.render();
 		}
 	},
 
-	toggleLayer: function(){
-		if(this.model.isOn()){
+	toggleLayer : function() {
+		if (this.model.isOn()) {
 			this.render();
-		}else{
+		} else {
 			this.clearMarkers();
 		}
 	},
 
-	clearMarkers: function(){
-    var self = this;
+	clearMarkers : function() {
+		var self = this;
 
-		if(this.cluster){
+		if (this.cluster) {
 			this.cluster.clearMarkers();
-    }
+		}
 
-    var l = this.markers.length;
-    for(var i=0;i<l;i++){
-      this.map.removeMarker(this.markers[i]);
-    }
+		var l = this.markers.length;
+		for (var i = 0; i < l; i++) {
+			this.map.removeMarker(this.markers[i]);
+		}
 
-    _.each(this.circles, function(circle) {
-      self.map.removePoly(circle);
-      delete circle;
-    });
+		_.each(this.circles, function(circle) {
+			self.map.removePoly(circle);
+			delete circle;
+		});
 
-		if(this.ib != undefined){this.ib.close();}
-		this.markers =[];
+		if (this.ib != undefined) {
+			this.ib.close();
+		}
+		this.markers = [];
 	},
 
-	remove: function(){
+	remove : function() {
 		this.clearMarkers();
 		this.tab.remove();
 		delete this.markers;
 		delete this;
 	},
 
-	renderMarkers: function(){
-    var self = this;
+	renderMarkers : function() {
+		var self = this;
 		this.tab.setLoading();
-    if (this.map.base.is('google')) {
-      // clear map first?
-      var rows = this.model.get('rows');
-      var circles = this.model.get('circles');
-      // var f = bdl.geodash.IconFactory;
-      for(var i=0;i<rows.length;i++){
-        var icon = this.model.getIcon(i);
-        var latlng = this.map.getApiLatLng(this.model.getLatLng(i))
-        icon.position = latlng;
-        this.addMarker(icon,i);
+		if (this.map.base.is('google')) {
+			// clear map first?
+			var rows = this.model.get('rows');
+			var circles = this.model.get('circles');
+			// var f = bdl.geodash.IconFactory;
+			for (var i = 0; i < rows.length; i++) {
+				var icon = this.model.getIcon(i);
+				var latlng = this.map.getApiLatLng(this.model.getLatLng(i))
+				icon.position = latlng;
+				this.addMarker(icon, i);
 
-        _.each(circles, function(circle) {
-          var color = '#' + circle.color;
-          var size = (circle.units == 'miles' ? circle.size * 1.60934 : circle.size) / 2;
-          var c = self._drawCircle(latlng.lat(), latlng.lng(), size, color, 1, 0.8, color, 0.3);
-          self.circles.push(c);
-          c.setMap(self.map.apiMap);
-        });
+				_.each(circles, function(circle) {
+					var color = '#' + circle.color;
+					var size = (circle.units == 'miles' ? circle.size * 1.60934 : circle.size) / 2;
+					var c = self._drawCircle(latlng.lat(), latlng.lng(), size, color, 1, 0.8, color, 0.3);
+					self.circles.push(c);
+					c.setMap(self.map.apiMap);
+				});
 
-      };
+			}
+			;
 
-      if(this.model.get('cluster')){
-        this.cluster = new MarkerClusterer(this.map.apiMap,this.markers);
-      }
+			if (this.model.get('cluster')) {
+				this.cluster = new MarkerClusterer(this.map.apiMap, this.markers);
+			}
 
+		} else if (this.map.base.is('leaflet-mapquest')) {
+			var rows = this.model.get('rows');
+			var circles = this.model.get('circles');
+			// var f = bdl.geodash.IconFactory;
+			for (var i = 0; i < rows.length; i++) {
+				var icon = this.model.getIcon(i);
+				icon.position = this.map.getApiLatLng(this.model.getLatLng(i));
+				var latlng = this.map.getApiLatLng(this.model.getLatLng(i))
+				this.addMarker(icon, i);
 
-    } else if (this.map.base.is('leaflet-mapquest')) {
-      var rows = this.model.get('rows');
-      var circles = this.model.get('circles');
-      // var f = bdl.geodash.IconFactory;
-      for(var i=0;i<rows.length;i++){
-        var icon = this.model.getIcon(i);
-        icon.position = this.map.getApiLatLng(this.model.getLatLng(i));
-        var latlng = this.map.getApiLatLng(this.model.getLatLng(i))
-        this.addMarker(icon,i);
-
-        _.each(circles, function(circle) {
-          var color = '#' + circle.color;
-          var size = (circle.units == 'miles' ? circle.size * 1.60934 : circle.size) / 2;
-          var c = self._drawCircle(latlng.lat, latlng.lng, size, color, 1, 0.8, color, 0.3);
-          self.circles.push(c);
-          self.map.apiMap.addLayer(c);
-        });
-      }
-      // TODO: cluster
-      /*
-      if(this.model.get('cluster')){
-        this.cluster = new MarkerClusterer(this.map.apiMap,this.markers);
-      }
-       */
-    }
+				_.each(circles, function(circle) {
+					var color = '#' + circle.color;
+					var size = (circle.units == 'miles' ? circle.size * 1.60934 : circle.size) / 2;
+					var c = self._drawCircle(latlng.lat, latlng.lng, size, color, 1, 0.8, color, 0.3);
+					self.circles.push(c);
+					self.map.apiMap.addLayer(c);
+				});
+			}
+			// TODO: cluster
+			/*
+			 * if(this.model.get('cluster')){ this.cluster = new MarkerClusterer(this.map.apiMap,this.markers); }
+			 */
+		}
 
 		this.tab.setReady();
 	},
 
-	getIconThumb: function(rowID){
-		var icon =this.model.getIcon(rowID, true);
-    if (this.map.base.is('google')) {
-		  return '<img src="' + icon.thumb + '"/>';
-    } else if (this.map.base.is('leaflet-mapquest')) {
-		  return '<img src="' + icon.options.thumb + '"/>';
-    }
-	},
-
-	loadModel: function(isRefresh){
-		var isRefresh = isRefresh === undefined ? false: isRefresh; // default to false
-		var self = this;
-		if( self.tab ){ self.tab.setLoading(); };
-		this.map.gd.log({
-			message: "Loading layer:  " + this.model.get('name'),
-			type: "info" });
-      var opts = {
-        model: this.model,
-        success: function(resp){
-          self.model.set(resp);
-
-          if(self.model.get('state') == "ready"){
-            var rows = self.model.get('rows');
-            if(rows.length == 0) {
-              self.tab.setError({message: "No data to display."});
-            } else {
-              if(self.map.isReady()){
-                self.render();
-              }
-              if(isRefresh){ self.tab.renderPage(1); }
-            }
-            self.tab.setReady();
-          }else{
-            self.tab.setError({message: "Error loading layer: " +
-                              resp.status + "; Error:  " + resp.errors[0] });
-          }
-        },
-        error: function(response) {
-          self.model.set({state: "failed"});
-          var msg;
-          if(response.getResponseHeader){
-            var msg = bdl.geodash.breakWord(response.getResponseHeader("X-MSTR-TaskFailureMsg"));
-          }else{
-            msg = "Error fetching layer.  Status: " + response.status + "; Status Text: " + response.statusText;
-          }
-          self.tab.setError({message: msg});
-        }
-      };
-      bdl.geodash.MSTR.loadModel(opts);
-  },
-
-	_initInfoBox: function(){
-    if (this.map.base.is('google')) {
-      this.ib = new bdl.geodash.InfoBox({
-        closeBoxURL: ""
-      });
-      // this is here because in we cant do prototype
-      // inheritance until google maps api is loaded.
-      _.extend(this.ib,new google.maps.OverlayView());
-    } else if (this.map.base.is('leaflet-mapquest')) {
-      this.ib = new bdl.geodash.GenericInfoBox({});
-    }
-
-	},
-
-	_initModel: function(){
-		if(!this.model.isPopulated()){
-			this.loadModel(false);
-		}else{
-			this.model.set({state: "ready"});
+	getIconThumb : function(rowID) {
+		var icon = this.model.getIcon(rowID, true);
+		if (this.map.base.is('google')) {
+			return '<img src="' + icon.thumb + '"/>';
+		} else if (this.map.base.is('leaflet-mapquest')) {
+			return '<img src="' + icon.options.thumb + '"/>';
 		}
 	},
 
-	_getBoxWidth: function(r){
-		var lengths = _.map(r, function(val,col){
+	loadModel : function(isRefresh) {
+		var isRefresh = isRefresh === undefined ? false : isRefresh; // default to false
+		var self = this;
+		if (self.tab) {
+			self.tab.setLoading();
+		}
+		;
+		this.map.gd.log({
+			message : "Loading layer:  " + this.model.get('name'),
+			type : "info"
+		});
+		var opts = {
+			model : this.model,
+			success : function(resp) {
+				self.model.set(resp);
+
+				if (self.model.get('state') == "ready") {
+					var rows = self.model.get('rows');
+					if (rows.length == 0) {
+						self.tab.setError({
+							message : "No data to display."
+						});
+					} else {
+						if (self.map.isReady()) {
+							self.render();
+						}
+						if (isRefresh) {
+							self.tab.renderPage(1);
+						}
+					}
+					self.tab.setReady();
+				} else {
+					self.tab.setError({
+						message : "Error loading layer: " + resp.status + "; Error:  " + resp.errors[0]
+					});
+				}
+			},
+			error : function(response) {
+				self.model.set({
+					state : "failed"
+				});
+				var msg;
+				if (response.getResponseHeader) {
+					var msg = bdl.geodash.breakWord(response.getResponseHeader("X-MSTR-TaskFailureMsg"));
+				} else {
+					msg = "Error fetching layer.  Status: " + response.status + "; Status Text: " + response.statusText;
+				}
+				self.tab.setError({
+					message : msg
+				});
+			}
+		};
+		bdl.geodash.MSTR.loadModel(opts);
+	},
+
+	_initInfoBox : function() {
+		if (this.map.base.is('google')) {
+			this.ib = new bdl.geodash.InfoBox({
+				closeBoxURL : ""
+			});
+			// this is here because in we cant do prototype
+			// inheritance until google maps api is loaded.
+			_.extend(this.ib, new google.maps.OverlayView());
+		} else if (this.map.base.is('leaflet-mapquest')) {
+			this.ib = new bdl.geodash.GenericInfoBox({});
+		}
+
+	},
+
+	_initModel : function() {
+		if (!this.model.isPopulated()) {
+			this.loadModel(false);
+		} else {
+			this.model.set({
+				state : "ready"
+			});
+		}
+	},
+
+	_getBoxWidth : function(r) {
+		var lengths = _.map(r, function(val, col) {
 			return ("" + val + " " + col).length;
 		})
 		var len = _.max(lengths) * 11;
-		if(len <= 200){
+		if (len <= 200) {
 			return len + 6;
-		}else{
+		} else {
 			return 206;
 		}
 	},
 
-  _drawCircle: function(lat, lng, radiusKm, strokeColor, strokeWidth, strokeOpacity,
-                        fillColor, fillOpacity) {
-      /*
-      radius should be in km
-      NOTE: circle is actually being drawn with diamater of input size
-      */
+	_drawCircle : function(lat, lng, radiusKm, strokeColor, strokeWidth, strokeOpacity, fillColor, fillOpacity) {
+		/*
+		 * radius should be in km NOTE: circle is actually being drawn with diamater of input size
+		 */
 
-      var earth_radius = 6371.0;
-      var Cpoints = [];
-      var radius = 360 / earth_radius * radiusKm;
-      var nrOfPoints = 45;
+		var earth_radius = 6371.0;
+		var Cpoints = [];
+		var radius = 360 / earth_radius * radiusKm;
+		var nrOfPoints = 45;
 
-      for (var i=0; i < nrOfPoints; i++) {
-        var R = 6371;
-        var d = radiusKm;
+		for (var i = 0; i < nrOfPoints; i++) {
+			var R = 6371;
+			var d = radiusKm;
 
-        var brng = (i * 1.0 / nrOfPoints) * 2 * Math.PI;
+			var brng = (i * 1.0 / nrOfPoints) * 2 * Math.PI;
 
-        var lat1 = lat * Math.PI / 180;
-        var lon1 = lng * Math.PI / 180;
+			var lat1 = lat * Math.PI / 180;
+			var lon1 = lng * Math.PI / 180;
 
-        var clat = Math.asin( Math.sin(lat1)*Math.cos(d/R) +
-              Math.cos(lat1)*Math.sin(d/R)*Math.cos(brng) );
-        var clng = lon1 + Math.atan2(Math.sin(brng)*Math.sin(d/R)*Math.cos(lat1),
-                     Math.cos(d/R)-Math.sin(lat1)*Math.sin(clat));
+			var clat = Math.asin(Math.sin(lat1) * Math.cos(d / R) + Math.cos(lat1) * Math.sin(d / R) * Math.cos(brng));
+			var clng = lon1 + Math.atan2(Math.sin(brng) * Math.sin(d / R) * Math.cos(lat1), Math.cos(d / R) - Math.sin(lat1) * Math.sin(clat));
 
-        clat = clat * 180 / Math.PI;
-        clng = clng * 180 / Math.PI;
+			clat = clat * 180 / Math.PI;
+			clng = clng * 180 / Math.PI;
 
-        if(this.map.base.is('google')){
-          var P = new google.maps.LatLng(clat, clng);
-          Cpoints.push(P);
-        } else if(this.map.base.is('leaflet-mapquest')) {
-          var P = new L.LatLng(clat, clng);
-          Cpoints.push(P);
-        }
+			if (this.map.base.is('google')) {
+				var P = new google.maps.LatLng(clat, clng);
+				Cpoints.push(P);
+			} else if (this.map.base.is('leaflet-mapquest')) {
+				var P = new L.LatLng(clat, clng);
+				Cpoints.push(P);
+			}
 
-      }
+		}
 
-      if (this.map.base.is('google')) {
-        return new google.maps.Polygon({
-          paths: Cpoints,
-          strokeColor: strokeColor,
-          strokeOpacity: strokeOpacity,
-          strokeWeight: strokeWidth,
-          fillColor: fillColor,
-          fillOpacity: fillOpacity,
-          zIndex: 1
-        });
-      } else if (this.map.base.is('leaflet-mapquest')) {
+		if (this.map.base.is('google')) {
+			return new google.maps.Polygon({
+				paths : Cpoints,
+				strokeColor : strokeColor,
+				strokeOpacity : strokeOpacity,
+				strokeWeight : strokeWidth,
+				fillColor : fillColor,
+				fillOpacity : fillOpacity,
+				zIndex : 1
+			});
+		} else if (this.map.base.is('leaflet-mapquest')) {
 
-        var polyOptions = {
-          strokeColor: strokeColor,
-          strokeOpacity: strokeOpacity,
-          strokeWeight: strokeWidth,
-          fillColor: fillColor,
-          fillOpacity: fillOpacity,
-          weight: 1
-        };
+			var polyOptions = {
+				strokeColor : strokeColor,
+				strokeOpacity : strokeOpacity,
+				strokeWeight : strokeWidth,
+				fillColor : fillColor,
+				fillOpacity : fillOpacity,
+				weight : 1
+			};
 
-        return new L.Polygon(Cpoints, polyOptions);
-      }
-   }
+			return new L.Polygon(Cpoints, polyOptions);
+		}
+	}
 
 })
