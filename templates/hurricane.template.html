@@ -1,0 +1,147 @@
+<form id="layer-editor">
+  <input type="hidden" name="type" value="<%= type %>" />
+  <div class="gd-editor-title">Hurricane Track Editor</div>
+  <div class="gd-editor-section gd-editor-content">
+    <div class="gd-editor-item-desc">
+      Dots plotted on map show the hurricane intensity at the specified date and time.
+    </div>
+    <br/>
+    <div class="gd-editor-item-desc">
+      Wind swaths shapes show the potential area for maximum sustained winds at specified intensity.
+    </div>
+    <br/>
+    <div class="gd-editor-item-desc">
+      Intensity and color information available on Wikipedia: <a target="_blank" href="http://en.wikipedia.org/wiki/Saffir%E2%80%93Simpson_hurricane_wind_scale">Saffir–Simpson hurricane wind scale</a>
+    </div>
+  </div>
+  <div>
+  </div>
+  <div class="gd-editor-notice ui-state-error ui-corner-all"><span class="ui-icon ui-icon-alert"></span><span class="gd-notice"></span></div>
+  <div class="gd-editor-section">
+    <div class="gd-section-label">Options</div>
+    <div class="gd-section-options">
+      <label for="name">Layer Name:</label>
+      <input type="text" id="name" name="name" value="<%= name %>" /><br /><br />
+    </div>
+  </div>
+  <div class="gd-editor-section">
+    <div class="gd-section-label">Advanced</div>
+    <div class="gd-section-options">
+      <div class="gd-ga">
+        <div class="gd-u first">
+          <label>Active: </label>
+        </div>
+        <div class="gd-u gd-radio">
+          <input value=true id="active-y" name="on" type="radio" <% if(on){ print("checked"); } %>/><label for="active-y">Yes</label>
+          <input value=false id="active-n" name="on" type="radio" <% if(!on){ print("checked"); } %> /><label for="active-n">No</label>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="gd-editor-section">
+    <div class="gd-section-label">Data</div>
+    <div class="gd-section-options">
+      <div class="gd-ga">
+        <div class="gd-u first">
+          <label>Current:</label>
+        </div>
+        <div class="gd-u">
+          <div id="current_hurricane_name"><%= dss_product_item_name %></div>
+        </div>
+      </div>
+
+      <div class="gd-ga">
+        <div class="gd-u first">
+          <label>Name:</label>
+        </div>
+        <div class="gd-u gd-radio">
+          <input type="text" id="hurricane_name" name="hurricane_name" value="<%= hurricane_name %>" /><br />
+        </div>
+      </div>
+
+      <div class="gd-ga">
+        <div class="gd-u first">
+          <label>Date:</label>
+        </div>
+        <div class="gd-u">
+          Y:
+          <select id="year">
+            <option value="0">any</option>
+            <% for(i=0; i<years.length; i++) { %>
+            <option value="<%= years[i] %>"><%= years[i] %></option>
+            <% } %>
+
+          </select>
+          M:
+          <select id="month">
+            <option value="0">any</option>
+            <option value="1">Jan</option>
+            <option value="2">Feb</option>
+            <option value="3">Mar</option>
+            <option value="4">Apr</option>
+            <option value="5">May</option>
+            <option value="6">June</option>
+            <option value="7">Jul</option>
+            <option value="8">Aug</option>
+            <option value="9">Sep</option>
+            <option value="10">Oct</option>
+            <option value="11">Nov</option>
+            <option value="12">Dec</option>
+          </select>
+        </div>
+
+        <div class="gd-u first">
+          <label>Max Intensity (knots) From:</label>
+        </div>
+        <div class="gd-u">
+          <select id="from_intensity" name="settings.min_intensity">
+            <option value="0" selected="selected">Tropical Depression (&lt;= 34 knots)</option>
+            <option value="34">Tropical Storm (&lt; 64 knots)</option>
+            <option value="64">One (&lt; 83 knots)</option>
+            <option value="83">Two (&lt; 96 knots)</option>
+            <option value="96">Three (&lt; 113 knots)</option>
+            <option value="113">Four (&lt; 137 knots)</option>
+            <option value="137">Five (&gt; =137 knots)</option>
+          </select>
+          <br />
+        </div>
+
+        <div class="gd-u first">
+          <label>To:</label>
+        </div>
+        <div class="gd-u">
+          <select id="to_intensity" name="settings.max_intensity">
+            <option value="34">Tropical Depression (&lt;= 34 knots)</option>
+            <option value="63">Tropical Storm (&lt; 64 knots)</option>
+            <option value="82">One (&lt; 83 knots)</option>
+            <option value="95">Two (&lt; 96 knots)</option>
+            <option value="112">Three (&lt; 113 knots)</option>
+            <option value="136">Four (&lt; 137 knots)</option>
+            <option value="1000" selected="selected">Five (&gt; =137 knots)</option>
+          </select>
+        </div>
+
+        <div class="gd-u">
+          <div class="gd-u first">
+            <div class="gd-search-hurricanes" value="search_hurricanes">Search</div>
+          </div>
+        </div>
+        <div class="gd-u">
+          <div>
+            <br/>
+            <label>
+              Choose Hurricane:
+            </label>
+            <input type="hidden" id="dss_product_item_id" name="dss_product_item_id", value="<%= dss_product_item_id %>">
+            <input type="hidden" id="dss_product_item_name" name="dss_product_item_name", value="<%= dss_product_item_name %>">
+            <select size="5" id="dss_product_item_id_select" name="dss_product_item_id_select" class="gd-dss-product-item">
+            </select>
+            <br/>
+            <div class="gd-editor-hurricane-preview" id="preview">
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</form>

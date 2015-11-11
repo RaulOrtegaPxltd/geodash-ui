@@ -1,0 +1,217 @@
+<form id="layer-editor">
+  <input type="hidden" name="type" value="<%= type %>" />
+  <div class="gd-editor-title">Earthquakes Layer Editor</div>
+  <div class="gd-editor-section gd-editor-content">
+    <div class="gd-editor-item-desc">
+      Circles on map show earthquake details.
+    </div>
+    <br/>
+    <div class="gd-editor-item-desc">
+      Magnatude of the earthquake events description:
+      <a target="_blank" href="http://earthquake.usgs.gov/earthquakes/glossary.php">
+        http://earthquake.usgs.gov/earthquakes/glossary.php</a>
+    </div>
+    <br/>
+    <div class="gd-section-label">Legend</div>
+    <div>
+      <table class="gd-legend-depth gd-editor-item-desc">
+          <tr>
+            <th>
+            </th>
+            <th>
+              Depth (km)
+            </th>
+          </tr>
+          <tr>
+            <td bgcolor="#fa9600">
+            </td>
+            <td>
+              0 - 35
+            </td>
+          </tr>
+          <tr>
+            <td bgcolor="#ffff00">
+            </td>
+            <td>35 - 70</td>
+          </tr>
+          <tr>
+            <td bgcolor="#00ff00">
+            </td>
+            <td>
+              70 - 150
+            </td>
+          </tr>
+          <tr>
+            <td bgcolor="#0000ff">
+            </td>
+            <td>
+              150 - 300
+            </td>
+          </tr>
+          <tr>
+            <td bgcolor="#cb00ff">
+            </td>
+            <td>
+              300 - 500
+            </td>
+          </tr>
+          <tr>
+            <td bgcolor="#ff0000">
+            </td>
+            <td>
+              500 - 800
+            </td>
+          </tr>
+      </table>
+      <br/>
+      <div class="gd-editor-item-desc">
+        The larger the circle, appears, the larger the magnitude.
+      </div>
+    </div>
+    <div><br/></div>
+    <div class="gd-section-label">Magnitude</div>
+    <div>
+
+      <table class="gd-editor-earthquake-mag">
+        <tr>
+          <td>
+            2.5 or less
+          </td>
+          <td>
+            Usually not felt, but can be recorded by seismograph.
+          </td>
+        </tr>
+        <tr>
+          <td>
+            2.5 to 5.4
+          </td>
+          <td>
+            Often felt, but only causes minor damage.	30,000
+          </td>
+        </tr>
+        <tr>
+          <td>
+            5.5 to 6.0
+          </td>
+          <td>
+            Slight damage to buildings and other structures.
+          </td>
+        </tr>
+        <tr>
+          <td>
+            6.1 to 6.9		
+          </td>
+          <td>
+            May cause a lot of damage in very populated areas.
+          </td>
+        </tr>
+        <tr>
+          <td>
+            7.0 to 7.9
+          </td>
+          <td>
+            Major earthquake. Serious damage.
+          </td>
+        </tr>
+        <tr>
+          <td>
+            8.0 or greater	
+          </td>
+          <td>
+            Great earthquake. Can totally destroy communities near the epicenter.
+          </td>
+        </tr>
+      </table>
+
+    </div>
+  </div>
+
+  <div class="gd-editor-notice ui-state-error ui-corner-all"><span class="ui-icon ui-icon-alert"></span><span class="gd-notice"></span></div>
+  <div class="gd-editor-section">
+    <div class="gd-section-label">Options</div>
+    <div class="gd-section-options">
+      <label for="name">Layer Name:</label>
+      <input type="text" id="name" name="name" value="<%= name %>" /><br /><br />
+    </div>
+  </div>
+  <div class="gd-editor-section">
+    <div class="gd-section-label">Advanced</div>
+    <div class="gd-section-options">
+      <div class="gd-ga">
+        <div class="gd-u first">
+          <label>Active: </label>
+        </div>
+        <div class="gd-u gd-radio">
+          <input value=true id="active-y" name="on" type="radio" <% if(on){ print("checked"); } %>/><label for="active-y">Yes</label>
+          <input value=false id="active-n" name="on" type="radio" <% if(!on){ print("checked"); } %> /><label for="active-n">No</label>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="gd-editor-section">
+    <div class="gd-section-label">Data</div>
+    <div class="gd-section-options">
+      <div class="gd-ga">
+        <div class="gd-u first">
+          <label>Number of events:</label>
+        </div>
+        <div class="gd-u">
+          <div id="number_of_events"></div>
+        </div>
+      </div>
+
+      <div class="gd-ga">
+        <div class="gd-u first">
+          <label>Start Date:</label>
+        </div>
+        <div class="gd-u gd-radio">
+          <input type="text" id="start_date" name="settings.start_date" value="<%= settings.start_date %>" class="date search_param" /><br />
+        </div>
+      </div>
+
+      <div class="gd-ga">
+        <div class="gd-u first">
+          <label>End Date:</label>
+        </div>
+        <div class="gd-u gd-radio">
+          <input type="text" id="end_date" name="settings.end_date" value="<%= settings.end_date %>" class="date search_param" /><br />
+        </div>
+      </div>
+
+      <div class="gd-ga">
+        <div class="gd-u first">
+          <label>Minium Magnitude:</label>
+        </div>
+        <div class="gd-u gd-radio">
+          <input type="text" id="min_mag" name="settings.min_mag" value="<%= settings.min_mag %>" class="search_param" /><br />
+        </div>
+      </div>
+
+      <div class="gd-ga">
+        <div class="gd-u first">
+          <label>Maxium Magnitude:</label>
+        </div>
+        <div class="gd-u gd-radio">
+          <input type="text" id="max_mag" name="settings.max_mag" value="<%= settings.max_mag %>" class="search_param" /><br />
+        </div>
+
+      <div class="gd-ga">
+        <div class="gd-u first">
+          <label>Minium Depth (km):</label>
+        </div>
+        <div class="gd-u gd-radio">
+          <input type="text" id="min_depth" name="settings.min_depth" value="<%= settings.min_depth %>" class="search_param" /><br />
+        </div>
+      </div>
+
+      <div class="gd-ga">
+        <div class="gd-u first">
+          <label>Maxium Depth (km):</label>
+        </div>
+        <div class="gd-u gd-radio">
+          <input type="text" id="max_depth" name="settings.max_depth" value="<%= settings.max_depth %>" class="search_param" /><br />
+        </div>
+      </div>
+    </div>
+  </div>
+</form>

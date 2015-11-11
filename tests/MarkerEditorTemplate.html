@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Map Viewer</title>
+	<script type="text/javascript" src="../lib/jquery-1.7.1.min.js" type="text/javascript" charset="utf-8"></script>
+	<script src="../lib/jquery-ui-1.8.17.min.js" type="text/javascript" charset="utf-8"></script>
+	<link rel="stylesheet" href="../css/jquery-ui-1.8.17.css" type="text/css" media="screen" title="no title" charset="utf-8">	
+<link rel="stylesheet" href="../css/gd-core.css" type="text/css" media="screen" title="no title" charset="utf-8">
+
+</head>
+<body>
+	<div class="gd-editor" style="display:block;width:100%;height:600px;">
+	<div class="gd-editor-content">
+		<div class="gd-editor-title">Marker Editor</div> 
+	 	<div class="gd-editor-errors"></div>
+		<div class="gd-editor-section"> 
+			<div class="gd-section-label">Source</div>
+			<div class="gd-section-options">
+				<label for="gd-layerName">Layer Name:</label>
+				<input type="text" id="gd-layerName" name="gd-layerName" /><br /><br />
+				<div class="gd-editor-item-desc">
+					External reports must be in the same project and cached.
+				</div><br />
+				<div class="gd-radio"> 
+					<input id="gd-radio-current" name="gd-radio-source" type="radio" checked="checked"/><label for="gd-radio-current">This Report</label> 
+					<input id="gd-radio-external" name="gd-radio-source" type="radio" /><label for="gd-radio-external">External Report</label> 
+				</div>
+				<div class="gd-ge external-report">
+					<div class="gd-u first">
+						<label for="external-report-id">Report ID:</label><br />
+						<input type="text" id="external-report-id" name="external-report-id" /> 
+					</div>
+					<div class="gd-u"><button class="gd-button-simple" value="load">Load</button></div>
+				</div>
+			</div>
+		</div>
+		
+		<div class="gd-editor-section"> 
+			<div class="gd-section-label">Location</div>
+			<div class="gd-section-options">
+				<div class="gd-editor-item-desc">
+					Choose the field containing a lat,lng pair or the address. 
+				</div>
+				<div class="gd-ga">
+					<div class="gd-u first">
+						<label for="gd-geocode">Geocode: </label>
+					</div>
+					<div class="gd-u">	
+						<select id="gd-geocode" name="geocode">
+							<option>Some Col</option>
+							<option>Some Col</option>
+							<option>Some Col</option>
+						</select>
+					</div>
+				</div>
+				<div class="gd-ga">	
+					<div class="gd-u first">
+						<label for="gd-title">Title: </label>
+					</div>
+					<div class="gd-u">	
+						<select id="gd-title" name="title">
+							<option>Some Col</option>
+							<option>Some Col</option>
+							<option>Some Col</option>
+						</select>
+					</div>
+				</div>	
+			</div>
+		</div>
+		
+		<div class="gd-editor-section"> 
+			<div class="gd-section-label">Marker</div>
+			<div class="gd-section-options">
+				<div class="gd-editor-item-desc">
+					Click the icon shown below to choose a different marker.
+				</div>
+				<div class="gd-ga">
+					<div class="gd-u first">
+						<label for="gd-iconType">Icon Type: </label>
+					</div>
+					<div class="gd-u gd-icon-option">	
+						<button class="gd-iconTypePreview">
+							<img src="" />
+						</button>						
+					    <div>dynamic-pin</div>
+					</div>
+				</div>
+				<div class="gd-editor-item-desc">
+					Static color applies the same color to all records while threshold colors applies a unique color based on the underlying grid cell.
+				</div>
+				<div class="gd-ga">	
+					<div class="gd-u first">
+						<label for="gd-colorType">Color: </label>
+					</div>
+					<div class="gd-u gd-radio">	
+						<input id="gd-radio-static" name="gd-radio-color" type="radio" checked="checked"/><label for="gd-radio-static">Static</label> 
+						<input id="gd-radio-thresh" name="gd-radio-color" type="radio" /><label for="gd-radio-thresh">Thresholds</label> 
+					</div>
+				</div>
+				<div class="gd-ga gd-thresh-metric">	
+					<div class="gd-u first">
+						<label for="gd-title">Metric: </label>
+					</div>
+					<div class="gd-u">	
+						<select id="gd-title" name="title">
+							<option>Some Col</option>
+							<option>Some Col</option>
+							<option>Some Col</option>
+						</select>
+					</div>
+				</div>	
+			</div>
+		</div>
+		
+		<div class="gd-editor-section"> 
+			<div class="gd-section-label">Advanced</div>
+			<div class="gd-section-options">
+				<div class="gd-ga">	
+					<div class="gd-u first">
+						<label>Active: </label>
+					</div>
+					<div class="gd-u gd-radio">	
+						<input id="gd-radio-active-y" name="gd-radio-active" type="radio" /><label for="gd-radio-active-y">Yes</label> 
+						<input id="gd-radio-active-n" name="gd-radio-active" type="radio" checked="checked"/><label for="gd-radio-active-n">No</label> 
+					</div>
+				</div>
+				<div class="gd-editor-item-desc">
+					Clustering improves performances when displaying hundreds of markers.
+				</div>
+				<div class="gd-ga">
+					<div class="gd-u first">
+						<label>Cluster: </label>
+					</div>
+					<div class="gd-u gd-radio">	
+						<input id="gd-radio-cluster-y" name="gd-radio-cluster" type="radio" /><label for="gd-radio-cluster-y">Yes</label> 
+						<input id="gd-radio-cluster-n" name="gd-radio-cluster" type="radio" checked="checked"/><label for="gd-radio-cluster-n">No</label> 
+					</div>
+				</div>
+	
+			</div>
+		</div>
+	</div>
+	</div>
+	<script type="text/javascript">
+		$(".gd-radio").buttonset();
+		$(".gd-button-simple,.gd-iconTypePreview").button();
+	</script>	
+</body>

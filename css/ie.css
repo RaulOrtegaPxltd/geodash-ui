@@ -1,0 +1,42 @@
+.gd-map{ 
+	/* For IE 8 */
+	-ms-filter: "progid:DXImageTransform.Microsoft.Shadow(Strength=4, Direction=100, Color='#111111')";
+	/* For IE 5.5 - 7 */
+	/* filter:progid:DXImageTransform.Microsoft.Shadow(color='#111111', Direction=100, Strength=4); */
+}
+.gd-editor{ overflow: auto }
+.gd-editor-content{ overflow: auto;}
+
+.gd-ft-buttons,
+.gd-u,
+.gd-log,
+.gd-tools-left,
+.gd-tools-right,
+div.gd-layer-type-details,
+div.gd-layer-type-icon,
+.gd-row-content,
+.gd-row-icon,
+button.gd-refresh,
+.gb-ib-hd
+{
+  zoom: 1;
+  *display: inline;
+}
+
+span.gd-ib-title{
+  float: left;
+}
+
+.gd-editor-section .gd-section-label{
+  zoom: 1;
+  *display: inline;
+}
+
+.gd-editor-section .gd-section-options{
+  zoom: 1;
+  *display: inline;
+}
+
+.gd-log{
+  display: none;
+}

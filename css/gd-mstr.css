@@ -1,0 +1,15 @@
+input.gd-search{
+	height:25px
+}
+div.gd-paging{
+	padding:3px
+}
+.gd-ib td{
+font-size:11px;
+}
+.gd-tools button{
+	margin-top: .3em;
+}
+.gd-tools button:first-child{
+	margin-top: 0em;
+}

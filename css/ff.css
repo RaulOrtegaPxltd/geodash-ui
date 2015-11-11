@@ -1,0 +1,9 @@
+.gd-map-hd button.ui-button span.ui-button-text {
+	display:inline;
+}
+.gd-tools button{
+	margin: 2px 0;
+}
+.gd-tools button .ui-icon{
+	margin-left:-10px;
+}
