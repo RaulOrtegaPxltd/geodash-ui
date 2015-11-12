@@ -1,8 +1,9 @@
 (function() {
 	// adding selection method to mstr to support multi selection from geodash
-    // TODO: MSTR BONES TO MOJO
+    // TODO: This is no longer using an iFrame so references to window.parent are not relevant any longer.
 	var gr = window.parent.mstrGridReport;
 	if (gr != undefined) {
+	    // TODO: Bones cannot be used anymore.
 		gr.constructor.prototype.makeGeodashSelections = function(values, attId) {
 			var sd = this.getSelectionData(attId);
 			if (sd && sd.el && values) {
@@ -80,6 +81,7 @@ bdl.geodash.MSTR = {
 	},
 
 	loadModelColumns : function(opts) {
+		//TODO: Replace call to get data for reading the data directly from the visualization.
 		var a = bdl.geodash.MSTR, hs = opts.success ? opts.success : function() {
 		}, he = opts.error ? opts.error : function() {
 		}, form = $(bdl.geodash.MSTR.form), url = form.attr("action"), data = "taskId=reportExecute&taskEnv=xhr&taskContentType=json&styleName=GeodashActionStyle&geodashAction=getLayerColumns" + "&reportID=" + opts.model.get('reportID') + "&sessionState=" + form.find("input[name=sessionState]").val();
@@ -98,6 +100,7 @@ bdl.geodash.MSTR = {
 	},
 
 	deleteModel : function(opts) {
+		//TODO: modify task call to use MicroStrategy framework instead and call new task to deleteLayer
 		var a = bdl.geodash.MSTR, hs = opts.success ? opts.success : function() {
 		}, he = opts.error ? opts.error : function() {
 		};
@@ -112,7 +115,9 @@ bdl.geodash.MSTR = {
 	},
 
 	getGdGridActionStage : function(action, model) {
+		//TODO: modify task call to use MicroStrategy framework instead and call new task to getLayer
 		var boneID = model.get('gdGridId');
+		//TODO: Cannot use bones anymore
 		var bone = bdl.geodash.MSTR.getGridBone(model.get('gdGridId'));
 		if (bone == null) {
 			return null;
@@ -149,7 +154,7 @@ bdl.geodash.MSTR = {
 	},
 
 	getActionStage : function(action, model) {
-		// console.log('getActionStage', action, model);
+		//TODO: modify task call to use MicroStrategy framework instead and call new tasks
 		var mSrc = model.get('source');
 		if ((mSrc == "external" || mSrc == "gdgrid") && bdl.geodash.MSTR.isRW() && action == "getLayer") {
 			return bdl.geodash.MSTR.getRWExternalLayerActionStage(model);
@@ -182,6 +187,7 @@ bdl.geodash.MSTR = {
 	},
 
 	getRWExternalLayerActionStage : function(model) {
+		//TODO: modify task call to use MicroStrategy framework instead and call new task to deleteLayer
 		var form = $("form#gd-external-action-form");
 		var js = _.clone(model.toJSON());
 		delete js["rows"];
@@ -198,6 +204,7 @@ bdl.geodash.MSTR = {
 	},
 
 	isRW : function() {
+		//TODO: This will most likely be not needed anymore
 		var rwb = $(bdl.geodash.MSTR.form).find("input[name=rwb]").val();
 		if (rwb && $.trim(rwb) != "") {
 			return true;
@@ -208,6 +215,7 @@ bdl.geodash.MSTR = {
 
 	// data = response data
 	updateActionStage : function(data) {
+	    // TODO: We cannot use this action stage any longer. We will need to refactor this to use MicroStrategy framework to call tasks.
 		try {
 			data = JSON.parse(data.responseText);
 		} catch (e) {
@@ -231,7 +239,7 @@ bdl.geodash.MSTR = {
 	},
 
 	getGridBone : function(boneId) {
-	    // TODO: MSTR BONES TO MOJO
+	    // TODO: This will not be needed anymore. Bones is a deprecated MicroStrategy framework. 
 		if (typeof (boneId) == 'undefined') {
 			var b = bdl.geodash.MSTR;
 		} else {
@@ -250,7 +258,9 @@ bdl.geodash.MSTR = {
 	},
 
 	makeSelections : function(selections, gd, boneId, selectorArg) {
+		//TODO: Update to new visualization framework
 		var b = bdl.geodash.MSTR;
+		//TODO: cannot use bones anymore.
 		if (b.getGridBone(boneId).makeGeodashSelections == undefined) {
 			b.getGridBone(boneId).makeGeodashSelections = function(values, attId, selector) {
 				// this - a mstrGridRW object
@@ -280,6 +290,7 @@ bdl.geodash.MSTR = {
 	},
 
 	init : function(boneID) {
+		//TODO: Need to find a different identifier as bones can not be used any longer.
 		bdl.geodash.MSTR.boneID = boneID;//
 	}
 }
