@@ -19,7 +19,7 @@ bdl.geodash.Map = Backbone.View.extend({
     this.uniqueId = "gdmap_";
     var r = /uniqueId=(\w+)/;
     m = r.exec(window.location.href);
-    if(m.length > 1) {
+    if(m && m.length > 1) {
       this.uniqueId =  this.uniqueId + m[1];
     }
   },
