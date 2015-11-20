@@ -13,7 +13,7 @@ bdl.geodash.AreaEditor = Backbone.View.extend({
 
 	render : function() {
 		var m = this.model.toJSON();
-		// TODO: Cannot user MSTR Bones anymore. Nee to change to MOJO
+		// TODO: Cannot user MSTR Bones anymore. Need to change to MOJO
 		this.gdGridBones = $.map(window.top.microstrategy.bones, function(b) {
 			if (b.selectedVisualization == "GeodashGridStyle")
 				return b;

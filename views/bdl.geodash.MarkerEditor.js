@@ -14,14 +14,18 @@ bdl.geodash.MarkerEditor = Backbone.View.extend({
 	// events: {
 	// "click .gd-iconType": "iconPicker"
 	// },
-
 	render : function() {
 		var m = this.model.toJSON();
 	    // TODO: MSTR BONES TO MOJO
-		this.gdGridBones = $.map(window.top.microstrategy.bones, function(b) {
-			if (b.selectedVisualization == "GeodashGridStyle")
-				return b;
+		this.gdGridBones = $.map(mstrmojo.all, function(b) {
+			if (b.gridInfo){
+				if(b.defn.vis && b.defn.vis.vn == "GdGridMojoVisualizationStyle"){
+					b.defn.parent = b;
+					return b.defn;
+				}
+			}
 		});
+		//TODO: Multiple geodash grids
 		m.gdGridBones = this.gdGridBones;
 		m.id = this.model.id ? this.model.id : null;
 		m.type = this.model.type;
@@ -210,15 +214,16 @@ bdl.geodash.MarkerEditor = Backbone.View.extend({
 				return b;
 			}
 		})[0];
-		var datasetID = $(gdGrid.gridSpan).find("div.datasetID")[0].innerText;
-
+		//var datasetID = $(gdGrid.gridSpan).find("div.datasetID")[0].innerText;
+		var gridKey = gdGrid.parent.k;
+			
 		this.$(".external-report").parents("div.gd-editor-section").siblings("div.gd-editor-section").slideUp();
 
 		this.model.set({
-			reportID : datasetID,
+			gridKey : gridKey,
 			name : this.$("input[name=name]").val(),
 			source : "gdgrid",
-			gdGridId : selectedGridId
+			gdGrid : gdGrid
 		}, {
 			silent : true
 		});

@@ -36,32 +36,40 @@ bdl.geodash.MSTR = {
 	},
 
 	loadModel : function(opts) {
-		var a = bdl.geodash.MSTR, hs = opts.success ? opts.success : function() {
-		}, he = opts.error ? opts.error : function() {
-		};
+//		var a = bdl.geodash.MSTR, hs = opts.success ? opts.success : function() {
+//		}, he = opts.error ? opts.error : function() {
+//		};
 
-		if (opts.model.get('source') == 'gdgrid') {
-			var stage = a.getGdGridActionStage("getLayer", opts.model);
-		} else {
-			var stage = a.getActionStage("getLayer", opts.model);
-		}
+//		if (opts.model.get('source') == 'gdgrid') {
+//			var stage = a.getGdGridActionStage("getLayer", opts.model);
+//		} else {
+//			var stage = a.getActionStage("getLayer", opts.model);
+//		}
 
 		// fix for IE.. it's been slow loading the page, need to try again
-		if (stage == null) {
-			setTimeout(function() {
-				a.loadModel(opts);
-			}, 1000);
-			return;
-		}
+//		if (stage == null) {
+//			setTimeout(function() {
+//				a.loadModel(opts);
+//			}, 1000);
+//			return;
+//		}
 
 		// console.log('MSTR.loadModel', 'stage', stage, 'stage.data', stage.data, opts.model);
-		$.post(stage.url, stage.data, function(resp) {
-			hs(resp);
-		}, 'json').error(function(resp) {
-			he(resp);
-		}).complete(function(resp) {
-			a.updateActionStage(resp);
-		});
+//		$.post(stage.url, stage.data, function(resp) {
+//			hs(resp);
+//		}, 'json').error(function(resp) {
+//			he(resp);
+//		}).complete(function(resp) {
+//			a.updateActionStage(resp);
+//		});	
+		
+		if (opts.model.get('source') == 'external') {
+			mstrmojo.xhr.request("POST", mstrConfig.taskURL, opts, {
+				taskId : "geodash3GetLayer",
+				sessionState : mstrApp.sessionState,
+				objectID : opts.model.get('reportID')
+			});
+		}	
 	},
 
 	saveModel : function(opts) {
@@ -82,21 +90,43 @@ bdl.geodash.MSTR = {
 
 	loadModelColumns : function(opts) {
 		//TODO: Replace call to get data for reading the data directly from the visualization.
-		var a = bdl.geodash.MSTR, hs = opts.success ? opts.success : function() {
-		}, he = opts.error ? opts.error : function() {
-		}, form = $(bdl.geodash.MSTR.form), url = form.attr("action"), data = "taskId=reportExecute&taskEnv=xhr&taskContentType=json&styleName=GeodashActionStyle&geodashAction=getLayerColumns" + "&reportID=" + opts.model.get('reportID') + "&sessionState=" + form.find("input[name=sessionState]").val();
+//		var a = bdl.geodash.MSTR; 
+//			hs = opts.success ? opts.success : function() {
+//			}, 
+//			he = opts.error ? opts.error : function() {
+//			}; 
+			//form = $(bdl.geodash.MSTR.form), 
+			//url = form.attr("action"), 
+			//data = "taskId=reportExecute&taskEnv=xhr&taskContentType=json&styleName=GeodashActionStyle&geodashAction=getLayerColumns" + "&reportID=" + opts.model.get('reportID') + "&sessionState=" + form.find("input[name=sessionState]").val();
+			//data = "taskId=geodash3GetLayerColumns&taskEnv=xhr&taskContentType=json&reportID=" + opts.model.get('reportID') + "&sessionState=" + mstrApp.sessionState;
 
-		if (a.isRW()) {
-			data += "&originMessageID=" + $("form#gd-external-action-form").find("input[name=originMessageID]").val();
-		} else {
-			data += "&originMessageID=" + form.find("input[name=originMessageID]").val();
+		//if (a.isRW()) {
+			//data += "&originMessageID=" + $("form#gd-external-action-form").find("input[name=originMessageID]").val();
+		//} else {
+		//	data += "&originMessageID=" + form.find("input[name=originMessageID]").val();
+		//}
+		var taskInfo = {taskId:"geodash3GetLayerColumns",
+		 		 sessionState:mstrApp.sessionState
+		 	 };
+		var gridKey = opts.model.get('gridKey');
+		if(gridKey){
+			taskInfo.gridKey = gridKey;
+			taskInfo.messageID = mstrApp.getMsgID();
+		}else{
+			taskInfo.objectID = opts.model.get('reportID');
 		}
-		// console.log(a, url, data);
-		$.post(url, data, function(resp) {
-			hs(resp);
-		}, 'json').error(function(resp) {
-			he(resp);
-		});
+		
+		 mstrmojo.xhr.request("POST",
+				 mstrConfig.taskURL,
+				 opts,
+			 	 taskInfo
+		 );
+		 //console.log(a, url, data);
+		//$.post(url, data, function(resp) {
+			//hs(resp);
+		//}, 'json').error(function(resp) {
+			//he(resp);
+		//});
 	},
 
 	deleteModel : function(opts) {

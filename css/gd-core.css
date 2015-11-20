@@ -200,7 +200,7 @@ div.gd-ft-buttons button.ui-button{	-webkit-border-radius: 0px;-moz-border-radiu
 	font-weight:normal;
 }
 .gd-editor input{
-	font-size:1.1em;
+/* 	font-size:1.1em; */
 	width:200px;
 }
 .gd-editor .gd-g,.gd-editor .gd-ge,.gd-editor .gd-ga{ margin-top: 10px; margin-bottom:10px;}
