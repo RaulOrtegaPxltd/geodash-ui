@@ -17,7 +17,6 @@ bdl.geodash.MassMarkerEditor = Backbone.View.extend({
 
 	render : function() {
 		var m = this.model.toJSON();
-	    // TODO: MSTR BONES TO MOJO
 		this.gdGridBones = $.map(mstrmojo.all, function(b) {
 			if (b.gridInfo){
 				if(b.defn.vis && b.defn.vis.vn == "GdGridMojoVisualizationStyle"){
