@@ -16,7 +16,6 @@ bdl.geodash.MarkerEditor = Backbone.View.extend({
 	// },
 	render : function() {
 		var m = this.model.toJSON();
-	    // TODO: MSTR BONES TO MOJO
 		this.gdGridBones = $.map(mstrmojo.all, function(b) {
 			if (b.gridInfo){
 				if(b.defn.vis && b.defn.vis.vn == "GdGridMojoVisualizationStyle"){
@@ -25,7 +24,6 @@ bdl.geodash.MarkerEditor = Backbone.View.extend({
 				}
 			}
 		});
-		//TODO: Multiple geodash grids
 		m.gdGridBones = this.gdGridBones;
 		m.id = this.model.id ? this.model.id : null;
 		m.type = this.model.type;
