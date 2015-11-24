@@ -119,6 +119,7 @@ bdl.geodash.Editor= Backbone.View.extend({
 		var model = self.editor.save();
     // console.log('saving...', model);
 		var handleSuccess = function(data){
+			debugger;
 			self.buttonState("enable");
 			if(data && data.state == "failed"){
 				return self.notice({type:"alert",message: data.errors[0] });
@@ -141,6 +142,7 @@ bdl.geodash.Editor= Backbone.View.extend({
 			}
 		};
 		var handleError = function(data){
+			debugger;
 			self.buttonState("enable");
 			var msg = bdl.geodash.breakWord(data.getResponseHeader("X-MSTR-TaskFailureMsg"));
 			self.notice({type:"alert",message: msg });

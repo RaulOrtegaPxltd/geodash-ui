@@ -213,12 +213,12 @@ bdl.geodash.MarkerEditor = Backbone.View.extend({
 			}
 		})[0];
 		//var datasetID = $(gdGrid.gridSpan).find("div.datasetID")[0].innerText;
-		var gridKey = gdGrid.parent.k;
+		var gdGridKey = gdGrid.parent.k;
 			
 		this.$(".external-report").parents("div.gd-editor-section").siblings("div.gd-editor-section").slideUp();
 
 		this.model.set({
-			gridKey : gridKey,
+			gdGridKey : gdGridKey,
 			name : this.$("input[name=name]").val(),
 			source : "gdgrid",
 			gdGrid : gdGrid

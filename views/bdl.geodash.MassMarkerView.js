@@ -2,7 +2,7 @@ function MilliMapType(model, tileSize) {
 	this.tileSize = tileSize;
 	this.model = model;
 }
-
+// TODO: Replace with MSTR Task geodash3GetTile
 MilliMapType.prototype.getTile = function(coord, zoom, ownerDocument) {
 	var self = this;
 
