@@ -49,7 +49,8 @@ bdl.geodash.GD = Backbone.View.extend({
 		if(this.base.get('permissions')['edit']){
 			$(".gd-nav div.gd-ft-buttons").show();
 		}
-		bdl.geodash.MSTR.init(this.base.get('boneID'));
+		//TODO: Remove this line as bones are not used any longer
+		//bdl.geodash.MSTR.init(this.base.get('boneID'));
 		return this;								
 	},
 	

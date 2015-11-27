@@ -2,7 +2,7 @@ function MilliMapType(model, tileSize) {
 	this.tileSize = tileSize;
 	this.model = model;
 }
-// TODO: Replace with MSTR Task geodash3GetTile
+
 MilliMapType.prototype.getTile = function(coord, zoom, ownerDocument) {
 	var self = this;
 
@@ -12,16 +12,27 @@ MilliMapType.prototype.getTile = function(coord, zoom, ownerDocument) {
 	div.style.borderWidth = '0px';
 	div.style.margin = '0';
 
-	var stage = bdl.geodash.MSTR.getMarkerTileStage({
-		model : self.model
-	}, coord.x, coord.y, zoom);
-	// console.log('getTile stage', stage);
-	var url = stage.url + "?" + stage.data;
-	// console.log('getTile url', url);
+	var a = bdl.geodash.MSTR;
+
+	var js = _.clone(self.model.toJSON());
+	delete js["rows"];
+	if (self.model.get('type') != "kmlLayer") {
+		delete js["url"];
+	}
+	delete js["geom"];
+
+	var layer = JSON.stringify(js).replace(/#/, '');
+
+	var taskInfo = {
+		taskId : "geodash3GetTile",
+		sessionState : mstrApp.sessionState,
+		layer : layer,
+		x : coord.x,
+		y : coord.y,
+		z : zoom
+	};
+
 	var opts = {
-		url : stage.url,
-		dataType : 'json',
-		data : stage.data,
 		success : function(data) {
 			var img = ownerDocument.createElement('img');
 			img.style.width = '256px';
@@ -30,8 +41,20 @@ MilliMapType.prototype.getTile = function(coord, zoom, ownerDocument) {
 			div.appendChild(img);
 		}
 	};
-	// console.log('getTile opts', opts);
-	$.post(stage.url, stage.data, opts.success);
+
+	if (opts.model.get('source') == 'external') {
+		taskInfo.objectID = opts.model.get('reportID');
+	} else {
+		taskInfo.messageID = mstrApp.getMsgID();
+	}
+	if (opts.model.get('source') == 'current') {
+		taskInfo.gridKey = gd.base.get('parent').k;
+	}
+	if (opts.model.get('source') == 'gdGrid') {
+		taskInfo.gridKey = opts.model.get('gdGridKey');
+	}
+	
+	mstrmojo.xhr.request("POST", mstrConfig.taskURL, opts, taskInfo);
 	return div;
 };
 
@@ -97,7 +120,7 @@ bdl.geodash.MassMarkerView = Backbone.View.extend({
 			});
 		} else if (this.model.get('source') == "gdgrid") {
 			var gdGridId = this.model.get('gdGridId');
-		    // TODO: MSTR BONES TO MOJO
+			// TODO: MSTR BONES TO MOJO
 			var allBones = $.map(window.top.microstrategy.bones, function(b) {
 				if (b.isGridBone)
 					return b;

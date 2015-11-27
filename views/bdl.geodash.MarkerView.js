@@ -47,7 +47,7 @@ bdl.geodash.MarkerView = Backbone.View.extend({
 		this.markers.push(marker);
 		this.bounds.extend(this.map.getApiMarkerLatLng(marker));
 	},
-
+	//TODO: Change to Mojo Framework
 	makeSelection : function(row) {
 		if (!this.map.gd.base.get('isDoc')) {
 			return false;
@@ -269,7 +269,6 @@ bdl.geodash.MarkerView = Backbone.View.extend({
 				});
 
 			}
-			;
 
 			if (this.model.get('cluster')) {
 				this.cluster = new MarkerClusterer(this.map.apiMap, this.markers);
