@@ -131,7 +131,7 @@ table.gd-frame{
 }
 /** Maps and Tools **/
 .gd-tools-left,.gd-tools-right{ overflow: hidden; display:inline-block;}
-.gd-tools-left{ width:40%;}
+.gd-tools-left{ width:40%; font-size:initial;}
 .gd-tools-right{ width:59%;text-align:right;}
 div.gd-tools-right button.ui-button{height:22px; background:transparent url(images/tools-separator.png) no-repeat top left; }
 div.gd-tools-left button.ui-button{	height:22px; background:transparent url(images/tools-separator.png) no-repeat top right; }
