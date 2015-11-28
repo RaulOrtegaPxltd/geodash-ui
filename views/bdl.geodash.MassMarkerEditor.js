@@ -115,6 +115,7 @@ bdl.geodash.MassMarkerEditor = Backbone.View.extend({
 				$(el).css('backgroundColor', '#' + startVal);
 			},
 			onShow : function(colpkr) {
+				$(colpkr).zIndex(2000);
 				$(colpkr).fadeIn(500);
 				return false;
 			},
@@ -161,6 +162,7 @@ bdl.geodash.MassMarkerEditor = Backbone.View.extend({
 				$(el).find("div").css('backgroundColor', startVal);
 			},
 			onShow : function(colpkr) {
+				$(colpkr).zIndex(2000);
 				$(colpkr).fadeIn(500);
 				return false;
 			},

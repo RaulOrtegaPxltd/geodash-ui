@@ -92,6 +92,7 @@ bdl.geodash.AreaEditor = Backbone.View.extend({
 				$(el).find("div").css('backgroundColor', startVal);
 			},
 			onShow : function(colpkr) {
+				$(colpkr).zIndex(2000);
 				$(colpkr).fadeIn(500);
 				return false;
 			},
