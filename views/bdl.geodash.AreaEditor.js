@@ -12,7 +12,6 @@ bdl.geodash.AreaEditor = Backbone.View.extend({
 	},
 
 	render : function() {
-		debugger;
 		var m = this.model.toJSON();
 		this.gdGridBones = $.map(mstrmojo.all, function(b) {
 			if (b.gridInfo){
@@ -122,7 +121,6 @@ bdl.geodash.AreaEditor = Backbone.View.extend({
 	},
 
 	loadGridColumns : function() {
-		debugger;
 		var selectedGridId = $.trim($("form#layer-editor select[name='gdGridId']").val());
 	    // TODO: Cannot use MSTR Bones anymore. Need to change to Mojo
 		var gdGrid = $.map(this.gdGridBones, function(b) {
@@ -149,7 +147,6 @@ bdl.geodash.AreaEditor = Backbone.View.extend({
 	},
 
 	save : function() {
-		debugger;
 		var self = this;
 		var res = this.$("form#layer-editor").serializeArray();
 		// sets all form attributes on the model in silent mode.

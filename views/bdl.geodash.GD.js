@@ -14,7 +14,6 @@
 
 bdl.geodash.GD = Backbone.View.extend({
 	initialize: function(){
-
 		this.layers = new bdl.geodash.Layers();
 		this.layers.gd = this;
 
