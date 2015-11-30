@@ -173,7 +173,7 @@ bdl.geodash.MarkerEditor = Backbone.View.extend({
 		$('#staticColorPicker').ColorPicker({
 			color : '#0000ff',
 			onCreate : function(el) {
-				var startVal = $(el).next("input").val();
+				var startVal = "#" + $(el).next("input").val();
 				$(this.el).ColorPickerSetColor(startVal);
 				$(el).find("div").css('backgroundColor', startVal);
 			},
