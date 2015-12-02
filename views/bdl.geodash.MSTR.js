@@ -64,8 +64,11 @@ bdl.geodash.MSTR = {
 		if (opts.model.get('source') == 'current') {
 			taskInfo.gridKey = gd.base.get('parent').k;
 		}
-		if (opts.model.get('source') == 'gdGrid') {
+		if (opts.model.get('source') == 'gdgrid') {
 			taskInfo.gridKey = opts.model.get('gdGridKey');
+			if(!taskInfo.gridKey){
+				taskInfo.gridKey = mstrmojo.all[opts.model.get('gdGridId')].parent.k;
+			}
 		}
 
 		try {
@@ -87,6 +90,7 @@ bdl.geodash.MSTR = {
 			delete js["url"];
 		}
 		delete js["geom"];
+		delete js["gdGrid"];
 
 		var layer = JSON.stringify(js).replace(/#/, '');
 		

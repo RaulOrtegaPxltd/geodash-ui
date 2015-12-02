@@ -19,7 +19,6 @@ bdl.geodash.MarkerEditor = Backbone.View.extend({
 		this.gdGridBones = $.map(mstrmojo.all, function(b) {
 			if (b.gridInfo){
 				if(b.defn.vis && b.defn.vis.vn == "GdGridMojoVisualizationStyle"){
-					b.defn.parent = b;
 					return b.defn;
 				}
 			}

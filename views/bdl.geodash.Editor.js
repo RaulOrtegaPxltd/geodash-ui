@@ -127,6 +127,7 @@ bdl.geodash.Editor= Backbone.View.extend({
 				// setup model with new model data.=
 				if(model.isNew()){
 					model.set(data.layer);
+					delete model['attributes']['gdGrid'];
 					self.gd.layers.add(model);
 				//	model.view.render();
 				}else{
