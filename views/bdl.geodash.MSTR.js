@@ -136,10 +136,11 @@ bdl.geodash.MSTR = {
 
 	deleteModel : function(opts) {
 		var a = bdl.geodash.MSTR;
-
+		var layerId = opts.model.id;
 		var taskInfo = {
 			taskId : "geodash3DeleteLayer",
-			sessionState : mstrApp.sessionState
+			sessionState : mstrApp.sessionState,
+			layer : layerId
 		};
 		var gridKey = gd.base.get('parent').k;
 		if (gridKey) {

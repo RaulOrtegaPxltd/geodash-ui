@@ -252,10 +252,7 @@ bdl.geodash.MarkerEditor = Backbone.View.extend({
 				// ignore
 			} else {
 				a[k] = val;
-				self.model.set(a, {
-					silent : true
-				});
-				// console.log(k, val, a);
+				self.model.set(a);
 			}
 		});
 
