@@ -322,6 +322,7 @@ bdl.geodash.AreaView = Backbone.View.extend({
 	},
 
 	makeSelection : function(row) {
+		debugger;
 		if (!this.map.gd.base.get('isDoc') || row == undefined) {
 			return false;
 		}
@@ -334,16 +335,18 @@ bdl.geodash.AreaView = Backbone.View.extend({
 		} else if (this.model.get('source') == "gdgrid") {
 			var gdGridId = this.model.get('gdGridId');
 			// TODO: MSTR BONES TO MOJO
-			var allBones = $.map(window.top.microstrategy.bones, function(b) {
-				if (b.isGridBone)
-					return b;
-			});
-			var bone = $.map(allBones, function(b) {
-				if (b.id == gdGridId) {
-					return b;
-				}
-			})[0];
-			var selector = $(bone.gridSpan).find("div.selector")[0].innerText;
+//			var allBones = $.map(window.top.microstrategy.bones, function(b) {
+//				if (b.isGridBone)
+//					return b;
+//			});
+//			var bone = $.map(allBones, function(b) {
+//				if (b.id == gdGridId) {
+//					return b;
+//				}
+//			})[0];
+//			var selector = $(bone.gridSpan).find("div.selector")[0].innerText;
+			
+			var selector = null;
 
 			bdl.geodash.MSTR.makeSelections([ this.model.getTitle(row) ], this.map.gd, gdGridId, selector);
 		} else {

@@ -49,6 +49,7 @@ bdl.geodash.MarkerView = Backbone.View.extend({
 	},
 	//TODO: Change to Mojo Framework
 	makeSelection : function(row) {
+	    debugger;
 		if (!this.map.gd.base.get('isDoc')) {
 			return false;
 		}
@@ -61,16 +62,18 @@ bdl.geodash.MarkerView = Backbone.View.extend({
 		} else if (this.model.get('source') == "gdgrid") {
 			var gdGridId = this.model.get('gdGridId');
 		    // TODO: MSTR BONES TO MOJO
-			var allBones = $.map(window.top.microstrategy.bones, function(b) {
-				if (b.isGridBone)
-					return b;
-			});
-			var bone = $.map(allBones, function(b) {
-				if (b.id == gdGridId) {
-					return b;
-				}
-			})[0];
-			var selector = $(bone.gridSpan).find("div.selector")[0].innerText;
+//			var allBones = $.map(window.top.microstrategy.bones, function(b) {
+//				if (b.isGridBone)
+//					return b;
+//			});
+//			var bone = $.map(allBones, function(b) {
+//				if (b.id == gdGridId) {
+//					return b;
+//				}
+//			})[0];
+//			var selector = $(bone.gridSpan).find("div.selector")[0].innerText;
+			
+			var selector = null;
 
 			bdl.geodash.MSTR.makeSelections([ this.model.getTitle(row) ], this.map.gd, gdGridId, selector);
 

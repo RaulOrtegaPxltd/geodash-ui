@@ -39,11 +39,11 @@ bdl.geodash.Lasso = Backbone.View.extend({
 	activate: function(){
 		this.active = true;
 		this.trigger("activate");
-    var self = this;
+    self = this;
 
     if(this.api == "google") {
       this.map.apiMap.set("draggable",false);
-      var self = this;
+      self = this;
       this.polyline.setMap(this.map.apiMap);
       this.listeners.push(google.maps.event.addDomListener(this.map.apiMap,
         "mousedown",self.onMouseDown));
@@ -141,8 +141,8 @@ bdl.geodash.Lasso = Backbone.View.extend({
 	
 });
 
-function leafletContains(self) {
-  if (self.map.base.is('leaflet-mapquest')) {
+function leafletContains(lasso) {
+  if (lasso.map.base.is('leaflet-mapquest')) {
     L.Polygon.prototype.containsPoint = function (point) {
       // ray-casting algorithm based on
       // http://www.ecse.rpi.edu/Homepages/wrf/Research/Short_Notes/pnpoly.html
@@ -166,8 +166,8 @@ function leafletContains(self) {
   }
 };
 
-function googleBoundsHack(self) {
-  if (self.map.base.is('google') && !google.maps.Polygon.prototype.getBounds) {
+function googleBoundsHack(lasso) {
+  if (lasso.map.base.is('google') && !google.maps.Polygon.prototype.getBounds) {
 
     // Poygon getBounds extension - google-maps-extensions
     // http://code.google.com/p/google-maps-extensions/source/browse/google.maps.Polygon.getBounds.js
