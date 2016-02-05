@@ -32,7 +32,7 @@ bdl.geodash.protocol = $(location).attr('protocol');
 bdl.geodash.server = "geodash.co";
 // bdl.geodash.server = "192.168.5.40:3080";
 
-bdl.geodash.js_path = "../plugins/GeoDash2/javascript/geodash-ui";
+bdl.geodash.js_path = "../plugins/GeoDash3/javascript/geodash-ui";
 
 /* call back function to be called once maps api loads */
 bdl.geodash.cb = function(){
