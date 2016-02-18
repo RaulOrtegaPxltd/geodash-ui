@@ -322,7 +322,6 @@ bdl.geodash.AreaView = Backbone.View.extend({
 	},
 
 	makeSelection : function(row) {
-		debugger;
 		if (!this.map.gd.base.get('isDoc') || row == undefined) {
 			return false;
 		}

@@ -49,7 +49,6 @@ bdl.geodash.MarkerView = Backbone.View.extend({
 	},
 	//TODO: Change to Mojo Framework
 	makeSelection : function(row) {
-	    debugger;
 		if (!this.map.gd.base.get('isDoc')) {
 			return false;
 		}
