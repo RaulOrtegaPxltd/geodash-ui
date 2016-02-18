@@ -295,16 +295,15 @@ bdl.geodash.MSTR = {
 
 	// TODO: Update to new visualization framework
 	makeSelections : function(selections, gd, boneId, selectorArg) {
-		debugger;
 		var vis = gd.base.get('parent');
-		var events=[];
 		for (var i = 0; i < selections.length; i++) {
 			var elementID = vis.getElementID(selections[i]);
-			var sc = vis.getSC();
-			var evt = vis.getEventForSelection(elementID, sc);
-			events.push(evt);
+			selections[i] = elementID;
 		}
-		vis.submitEvents(events);		
+		var elementIDs = selections.join('\u001E');
+		var sc = vis.getSC();
+		var evt = vis.getEventForSelection(elementIDs, sc);
+		vis.submitEvents([evt]);		
 	},
 //	makeSelections : function(selections, gd, boneId, selectorArg) {
 //		var b = bdl.geodash.MSTR;

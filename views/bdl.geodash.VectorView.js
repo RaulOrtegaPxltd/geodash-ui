@@ -60,7 +60,6 @@ bdl.geodash.VectorView = Backbone.View.extend({
 	},
 
 	makeSelection : function(row) {
-		debugger;
 		if (!this.map.gd.base.get('isDoc') || row == undefined) {
 			return false;
 		}
