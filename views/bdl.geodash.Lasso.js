@@ -50,7 +50,7 @@ bdl.geodash.Lasso = Backbone.View.extend({
 			this.map.apiMap.set("draggable", false);
 			this.polyline.setMap(this.map.apiMap);
 			this.listeners.push(google.maps.event.addDomListener(this.map.apiMap, "mousedown", this.onMouseDown));
-			this.listeners.push(google.maps.event.addDomListener(this.map.apiMap, "mouseup", this.onMouseUp));
+			this.listeners.push(google.maps.event.addDomListener(this.map.apiMap.getDiv(), "mouseup", this.onMouseUp));
 			this.listeners.push(google.maps.event.addListener(this.map.apiMap, "mousemove", this.onMouseMove));
 			this.listeners.push(google.maps.event.addListener(this.polyline, "mousemove", this.onMouseMove));
 //			this.map.apiMap.getDiv().addEventListener("mousemove", this.onMouseMove);

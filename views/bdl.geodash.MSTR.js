@@ -303,6 +303,8 @@ bdl.geodash.MSTR = {
 		var elementIDs = selections.join('\u001E');
 		var sc = vis.getSC();
 		var evt = vis.getEventForSelection(elementIDs, sc);
+		if(!evt)
+			return null;
 		vis.submitEvents([evt]);		
 	},
 //	makeSelections : function(selections, gd, boneId, selectorArg) {
