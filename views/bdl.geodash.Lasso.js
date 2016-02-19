@@ -50,10 +50,12 @@ bdl.geodash.Lasso = Backbone.View.extend({
 			this.map.apiMap.set("draggable", false);
 			this.polyline.setMap(this.map.apiMap);
 			this.listeners.push(google.maps.event.addDomListener(this.map.apiMap, "mousedown", this.onMouseDown));
-			this.listeners.push(google.maps.event.addDomListener(this.map.apiMap, "mouseup", this.onMouseUp));
+			this.listeners.push(google.maps.event.addDomListener(this.map.apiMap.getDiv(), "mouseup", this.onMouseUp));
 			this.listeners.push(google.maps.event.addListener(this.map.apiMap, "mousemove", this.onMouseMove));
 			this.listeners.push(google.maps.event.addListener(this.polyline, "mousemove", this.onMouseMove));
-//			this.map.apiMap.getDiv().addEventListener("mousemove", this.onMouseMove);
+			// This is so that the lasso works in documents in presentation mode.
+			this.prevAllowDefaultTouches = mstrConfig.allowDefaultTouches;
+			mstrConfig.allowDefaultTouches = true;
 		} else if (this.api == 'leaflet-mapquest') {
 			this.map.apiMap.dragging.disable()
 			this.map.apiMap.addLayer(this.polyline);
@@ -72,7 +74,8 @@ bdl.geodash.Lasso = Backbone.View.extend({
 				google.maps.event.removeListener(this.listeners[i]);
 			}
 			this.listeners = [];
-//			this.map.apiMap.getDiv().removeEventListener("mousemove");
+			// This is so that the lasso works in documents in presentation mode.
+			mstrConfig.allowDefaultTouches = this.prevAllowDefaultTouches;
 		} else if (this.api == "leaflet-mapquest") {
 			gd.map.apiMap.dragging.enable()
 			this.map.apiMap.removeLayer(this.polyline);
