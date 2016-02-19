@@ -50,10 +50,10 @@ bdl.geodash.Lasso = Backbone.View.extend({
 			this.map.apiMap.set("draggable", false);
 			this.polyline.setMap(this.map.apiMap);
 			this.listeners.push(google.maps.event.addDomListener(this.map.apiMap, "mousedown", this.onMouseDown));
-			this.listeners.push(google.maps.event.addDomListener(this.map.apiMap.getDiv(), "mouseup", this.onMouseUp));
+			this.listeners.push(google.maps.event.addDomListener(this.map.apiMap, "mouseup", this.onMouseUp));
 			this.listeners.push(google.maps.event.addListener(this.map.apiMap, "mousemove", this.onMouseMove));
 			this.listeners.push(google.maps.event.addListener(this.polyline, "mousemove", this.onMouseMove));
-			// this.map.apiMap.getDiv().addEventListener("mousemove", this.onMouseMove);
+//			this.map.apiMap.getDiv().addEventListener("mousemove", this.onMouseMove);
 		} else if (this.api == 'leaflet-mapquest') {
 			this.map.apiMap.dragging.disable()
 			this.map.apiMap.addLayer(this.polyline);
@@ -72,7 +72,7 @@ bdl.geodash.Lasso = Backbone.View.extend({
 				google.maps.event.removeListener(this.listeners[i]);
 			}
 			this.listeners = [];
-			// this.map.apiMap.getDiv().removeEventListener("mousemove");
+//			this.map.apiMap.getDiv().removeEventListener("mousemove");
 		} else if (this.api == "leaflet-mapquest") {
 			gd.map.apiMap.dragging.enable()
 			this.map.apiMap.removeLayer(this.polyline);
@@ -131,22 +131,22 @@ bdl.geodash.Lasso = Backbone.View.extend({
 		}
 	},
 
-	// onMouseMove : function(e) {
-	// if (this.mouseDown) {
-	// if (this.api == 'google') {
-	// var rect = this.map.apiMap.getDiv().getBoundingClientRect()
-	// var posx = e.offsetX - this.map.apiMap.getDiv().clientLeft;// -180;
-	// var posy = e.offsetY - this.map.apiMap.getDiv().clientTop;// -6;
-	// console.log(posx + "," + posy);
-	// var latLng = this.getLatLngByOffset(this.map.apiMap, posx, posy);
-	// this.points.push(latLng);
-	// this.polyline.setPath(this.points);
-	// } else if (this.api == 'leaflet-mapquest') {
-	// this.points.push(e.latlng);
-	// this.polyline.setLatLngs(this.points);
-	// }
-	// }
-	// },
+//	onMouseMove : function(e) {
+//		if (this.mouseDown) {
+//			if (this.api == 'google') {
+//				var rect = this.map.apiMap.getDiv().getBoundingClientRect()
+//				var posx = e.offsetX - this.map.apiMap.getDiv().clientLeft;// -180;
+//				var posy = e.offsetY - this.map.apiMap.getDiv().clientTop;// -6;
+//				console.log(posx + "," + posy);
+//				var latLng = this.getLatLngByOffset(this.map.apiMap, posx, posy);
+//				this.points.push(latLng);
+//				this.polyline.setPath(this.points);
+//			} else if (this.api == 'leaflet-mapquest') {
+//				this.points.push(e.latlng);
+//				this.polyline.setLatLngs(this.points);
+//			}
+//		}
+//	},
 
 	clearMap : function() {
 		if (this.api == "google") {
