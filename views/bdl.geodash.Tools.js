@@ -147,6 +147,7 @@ bdl.geodash.Tools = Backbone.View.extend({
 		    	this.toggleLasso();
 				break;
 			case "directions":
+				this.showNav();
 			    this.gd.layers.add(new bdl.geodash.DirectionsLayer());
 				break;	
 			case "refreshLayers":
@@ -173,6 +174,13 @@ bdl.geodash.Tools = Backbone.View.extend({
 	
 	editBase: function(){
 		alert("base edited");
+	},
+	
+	showNav: function() {
+		if (this.gd.$(".gd-nav,.gd-main-nav-ctr").css("display") == "none") {
+			this.gd.$(".gd-nav,.gd-main-nav-ctr").show();
+			return;
+		}
 	},
 	
 	toggleNav: function(){
